@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CM to Inches Converter</title>
+    <meta name="description" content="A simple, fast, and mobile-friendly centimeter to inches converter for online shoppers.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --background-color: #FFFFFF;
+            --text-color: rgb(55, 53, 47);
+            --subtle-text-color: rgba(55, 53, 47, 0.6);
+            --card-background: #FFFFFF;
+            --border-color: rgba(55, 53, 47, 0.16);
+            --border-radius: 6px;
+            --shadow: rgba(15, 15, 15, 0.05) 0px 0px 0px 1px, rgba(15, 15, 15, 0.1) 0px 3px 6px, rgba(15, 15, 15, 0.2) 0px 9px 24px;
+        }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 1rem;
+        }
+        .main-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            max-width: 900px;
+            margin: 2rem auto;
+        }
+        .container {
+            width: 100%;
+            background-color: var(--card-background);
+            box-sizing: border-box;
+        }
+        h1 {
+            text-align: center;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        .subtitle {
+            text-align: center;
+            color: var(--subtle-text-color);
+            margin-bottom: 2.5rem;
+        }
+        .converter {
+            margin-bottom: 2rem;
+        }
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        .input-group {
+            display: flex;
+        }
+        input[type="number"] {
+            flex-grow: 1;
+            padding: 0.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            font-size: 1.1rem;
+            background-color: rgba(242, 241, 238, 0.6);
+            transition: background-color 0.2s;
+            -moz-appearance: textfield;
+        }
+        input[type="number"]:focus {
+            background-color: #FFF;
+            outline: 2px solid rgba(46, 170, 220, 0.5);
+            border-color: transparent;
+        }
+        input[type="number"]::-webkit-outer-spin-button,
+        input[type="number"]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        .convert-btn {
+            padding: 0.75rem 1.25rem;
+            margin-left: 0.75rem;
+            border: none;
+            border-radius: var(--border-radius);
+            background-color: rgb(46, 170, 220);
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: background-color 0.2s;
+        }
+        .convert-btn:hover {
+            background-color: rgb(0, 135, 203);
+        }
+        .result {
+            font-size: 1.5rem; 
+            font-weight: bold; 
+            color: var(--text-color); 
+            margin-top: 0.75rem;
+            min-height: 2.2rem;
+        }
+        #history-container {
+            padding-top: 1rem;
+        }
+        .history-header {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            margin-bottom: 1rem;
+            min-height: 2.25rem;
+        }
+        .clear-btn {
+            background: none;
+            border: none;
+            color: var(--subtle-text-color);
+            cursor: pointer;
+            font-size: 0.9rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            visibility: hidden;
+            opacity: 0;
+            transition: opacity 0.2s, visibility 0.2s;
+        }
+        #history-container:hover .clear-btn {
+            visibility: visible;
+            opacity: 1;
+        }
+        #history-list {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        #history-list li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 0.5rem;
+            border-bottom: 1px solid rgba(55, 53, 47, 0.08);
+            font-size: 1rem;
+        }
+        #history-list li:last-child {
+            border-bottom: none;
+        }
+        .delete-item-btn {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            cursor: pointer;
+            color: var(--subtle-text-color);
+            line-height: 1;
+            padding: 0.25rem 0.5rem;
+            border-radius: 50%;
+        }
+        .delete-item-btn:hover {
+            color: var(--text-color);
+            background-color: rgba(55, 53, 47, 0.08);
+        }
+
+        .footer {
+            text-align: center;
+            padding: 2rem 1rem 1rem;
+            color: var(--subtle-text-color);
+            font-size: 0.9rem;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        kbd {
+            background-color: rgba(55, 53, 47, 0.08);
+            border-radius: 3px;
+            padding: 2px 4px;
+            font-family: 'Inter', monospace;
+            font-size: 0.85rem;
+            border-bottom: 1px solid rgba(55, 53, 47, 0.16);
+        }
+
+        /* Desktop layout */
+        @media (min-width: 768px) {
+            .main-wrapper {
+                flex-direction: row;
+                align-items: flex-start;
+                justify-content: center;
+                gap: 2.5rem;
+            }
+            .converter-panel {
+                flex: 2 1 500px;
+                max-width: 500px;
+            }
+            #history-container {
+                flex: 1 1 300px;
+                max-width: 300px;
+                position: sticky;
+                top: 2rem;
+            }
+            #history-list li {
+                color: var(--subtle-text-color);
+            }
+        }
+    </style>
+</head>
+<body onload="loadHistory()">
+    <div class="main-wrapper">
+        <div class="container converter-panel">
+            <h1>Unit Converter</h1>
+            <p class="subtitle">A fast and simple cm/inch converter.</p>
+
+            <div class="converter">
+                <label for="cm-input">Centimeters (cm) to Inches (in)</label>
+                <div class="input-group">
+                    <input type="number" id="cm-input" placeholder="Enter CM...">
+                    <button class="convert-btn" onclick="convert('cm-to-in')">Convert</button>
+                </div>
+                <p id="in-output" class="result">&nbsp;</p>
+            </div>
+
+            <div class="converter">
+                <label for="in-input">Inches (in) to Centimeters (cm)</label>
+                <div class="input-group">
+                    <input type="number" id="in-input" placeholder="Enter Inches...">
+                    <button class="convert-btn" onclick="convert('in-to-cm')">Convert</button>
+                </div>
+                <p id="cm-output" class="result">&nbsp;</p>
+            </div>
+            <footer class="footer">
+                <p>Press <kbd>Ctrl</kbd> + <kbd>D</kbd> or <kbd>Cmd</kbd> + <kbd>D</kbd> to bookmark this page.</p>
+            </footer>
+        </div>
+
+        <div id="history-container" class="container">
+            <div class="history-header">
+                <button id="clear-history-btn" class="clear-btn" onclick="clearHistory()">Clear All</button>
+            </div>
+            <ul id="history-list"></ul>
+        </div>
+    </div>
+
+    <script>
+        const CM_TO_IN_FACTOR = 0.393701;
+        const IN_TO_CM_FACTOR = 2.54;
+        let history = [];
+
+        const cmInput = document.getElementById('cm-input');
+        const inOutput = document.getElementById('in-output');
+        const inInput = document.getElementById('in-input');
+        const cmOutput = document.getElementById('cm-output');
+        const historyList = document.getElementById('history-list');
+
+        function convert(direction) {
+            let originalValue, resultValue, originalUnit, resultUnit;
+
+            if (direction === 'cm-to-in') {
+                if (!cmInput.value) { inOutput.innerHTML = '&nbsp;'; return; }
+                const inches = parseFloat(cmInput.value) * CM_TO_IN_FACTOR;
+                inOutput.textContent = inches.toFixed(2) + ' in';
+                
+                originalValue = cmInput.value;
+                resultValue = inches.toFixed(2);
+                originalUnit = 'cm';
+                resultUnit = 'in';
+            } else if (direction === 'in-to-cm') {
+                if (!inInput.value) { cmOutput.innerHTML = '&nbsp;'; return; }
+                const cm = parseFloat(inInput.value) * IN_TO_CM_FACTOR;
+                cmOutput.textContent = cm.toFixed(2) + ' cm';
+                
+                originalValue = inInput.value;
+                resultValue = cm.toFixed(2);
+                originalUnit = 'in';
+                resultUnit = 'cm';
+            }
+            
+            if (originalValue) {
+                addHistoryItem(`${originalValue} ${originalUnit}`, `${resultValue} ${resultUnit}`);
+            }
+        }
+        
+        function loadHistory() {
+            const savedHistory = localStorage.getItem('unitConversionHistory');
+            if (savedHistory) {
+                history = JSON.parse(savedHistory);
+            }
+            renderHistory();
+        }
+
+        function saveHistory() {
+            localStorage.setItem('unitConversionHistory', JSON.stringify(history));
+        }
+
+        function renderHistory() {
+            historyList.innerHTML = '';
+            const reversedHistory = [...history].reverse(); // Show latest first
+            for (const item of reversedHistory) {
+                const li = document.createElement('li');
+                li.innerHTML = `<span>${item.original} → ${item.converted}</span><button class="delete-item-btn" data-id="${item.id}">×</button>`;
+                historyList.appendChild(li);
+            }
+            // Toggle clear all button visibility
+            document.getElementById('clear-history-btn').style.display = history.length > 0 ? 'block' : 'none';
+        }
+
+        function addHistoryItem(original, converted) {
+            // Avoid adding duplicates of the last entry
+            if (history.length > 0 && history[history.length - 1].original === original && history[history.length - 1].converted === converted) {
+                return;
+            }
+            const newItem = {
+                id: Date.now(),
+                original: original,
+                converted: converted
+            };
+            history.push(newItem);
+            saveHistory();
+            renderHistory();
+        }
+
+        function deleteHistoryItem(id) {
+            history = history.filter(item => item.id !== id);
+            saveHistory();
+            renderHistory();
+        }
+
+        function clearHistory() {
+            history = [];
+            saveHistory();
+            renderHistory();
+        }
+
+        // Event delegation for delete buttons
+        historyList.addEventListener('click', function(e) {
+            if (e.target && e.target.classList.contains('delete-item-btn')) {
+                const itemId = parseInt(e.target.getAttribute('data-id'));
+                deleteHistoryItem(itemId);
+            }
+        });
+
+        cmInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                convert('cm-to-in');
+            }
+        });
+
+        inInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                convert('in-to-cm');
+            }
+        });
+    </script>
+</body>
+</html> 
